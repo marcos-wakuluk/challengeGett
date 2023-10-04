@@ -1,28 +1,20 @@
 import React, { useState } from 'react';
 import { Navigate } from 'react-router-dom';
-import { useDispatch } from 'react-redux';
-import { addTodo } from '../redux/todoSlice';
 
 const Login = () => {
   const [user, setUser] = useState('')
   const [password, setPassword] = useState('')
   const [isLoggedIn, setIsLoggedIn] = useState(false)
-  const dispatch = useDispatch()
 
   const handleLogin = () => {
     if (user === 'user' && password === '1234') {
       setIsLoggedIn(true)
     } else {
-      alert('El nombre de usuario y/o la contraseña son incorrectas')
+      alert('The username and/or password are incorrect')
     }
   }
 
   if (isLoggedIn) {
-    fetch('https://jsonplaceholder.typicode.com/todos')
-      .then((response) => response.json())
-      .then((data) => dispatch(addTodo(data)))
-      .catch((error) => console.log(error))
-
     return <Navigate to="/home" />
   }
 

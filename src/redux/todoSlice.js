@@ -12,12 +12,25 @@ export const todoSlice = createSlice({
       const todo = action.payload;
       state.value = todo
     },
+    addNewTodo: (state, action) => {
+      const todo = action.payload;
+      if (!Array.isArray(state.value)) {
+        state.value = [];
+      }
+      state.value.push(todo);
+    },
     editTodo: (state, action) => {
-      const { id, completed } = action.payload;
-      const title = 'fue modificado';
+      const { id, title } = action.payload;
       const todoIndex = state.value.findIndex(todo => todo.id === id);
       if (todoIndex !== -1) {
         state.value[todoIndex].title = title;
+      }
+    },
+    changeCompleted: (state, action) => {
+      const { id } = action.payload;
+      const todoIndex = state.value.findIndex(todo => todo.id === id);
+      if (todoIndex !== -1) {
+        state.value[todoIndex].completed = !state.value[todoIndex].completed;
       }
     },
     deleteTodo: (state, action) => {
@@ -27,6 +40,6 @@ export const todoSlice = createSlice({
   }
 })
 
-export const { addTodo, editTodo, deleteTodo } = todoSlice.actions;
+export const { addTodo, editTodo, deleteTodo, changeCompleted, addNewTodo } = todoSlice.actions;
 
 export default todoSlice.reducer;
