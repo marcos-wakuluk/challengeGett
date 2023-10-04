@@ -130,13 +130,6 @@ const TodoList = () => {
           <TodoTable
             columns={columns}
             todoList={todoList}
-            isEditing={isEditing}
-            editedTodo={editedTodo}
-            todoToEdit={todoToEdit}
-            dispatch={dispatch}
-            setIsEditing={setIsEditing}
-            setEditedTodo={setEditedTodo}
-            setTodoToEdit={setTodoToEdit}
           />
         </>
       )}

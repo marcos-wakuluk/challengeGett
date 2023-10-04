@@ -6,13 +6,6 @@ import { editTodo } from '../redux/todoSlice';
 const TodoTable = ({
   columns,
   todoList,
-  isEditing,
-  editedTodo,
-  todoToEdit,
-  dispatch,
-  setIsEditing,
-  setEditedTodo,
-  setTodoToEdit,
 }) => {
   const {
     getTableProps,
@@ -41,21 +34,6 @@ const TodoTable = ({
   const onChangeInInput = event => {
     const page = event.target.value ? Number(event.target.value) - 1 : 0
     gotoPage(page)
-  };
-
-  const handleEditTodo = (todo) => {
-    setIsEditing(true);
-    setEditedTodo(todo.title);
-    setTodoToEdit(todo);
-  };
-
-  const handleSaveEdit = () => {
-    const updatedTodo = { ...todoToEdit, title: editedTodo };
-    dispatch(editTodo(updatedTodo));
-
-    setIsEditing(false);
-    setEditedTodo('');
-    setTodoToEdit(null);
   };
 
   return (
