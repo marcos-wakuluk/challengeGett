@@ -2,6 +2,10 @@
 
 This is a To-Do List web application developed with React and Redux and Bootstrap. It allows users to log in, view a list of tasks, perform actions such as creating new tasks, editing existing tasks, deleting tasks, and adjusting the number of tasks displayed in the list.
 
+## Version
+
+This project is in version v16.16.0
+
 ## Key Features
 
 - Secure login functionality.

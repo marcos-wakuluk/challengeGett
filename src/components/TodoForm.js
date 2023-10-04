@@ -11,7 +11,7 @@ const TodoForm = () => {
   const handleAddTodo = () => {
     if (newTodoTitle.trim() !== '') {
       const newTodo = {
-        id: todoList.length + 1,
+        id: todoList[todoList.length - 1].id + 1,
         userId: 1,
         title: newTodoTitle,
         completed: false,

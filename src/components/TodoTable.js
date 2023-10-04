@@ -1,8 +1,19 @@
 import React from 'react';
 import { useTable, usePagination } from 'react-table';
 import { Row, Col, Button, Input } from 'reactstrap'
+import { editTodo } from '../redux/todoSlice';
 
-const TodoTable = ({ columns, data }) => {
+const TodoTable = ({
+  columns,
+  todoList,
+  isEditing,
+  editedTodo,
+  todoToEdit,
+  dispatch,
+  setIsEditing,
+  setEditedTodo,
+  setTodoToEdit,
+}) => {
   const {
     getTableProps,
     getTableBodyProps,
@@ -21,7 +32,7 @@ const TodoTable = ({ columns, data }) => {
   } = useTable(
     {
       columns,
-      data,
+      data: todoList,
       initialState: { pageIndex: 0, pageSize: 5 }
     },
     usePagination
@@ -30,6 +41,21 @@ const TodoTable = ({ columns, data }) => {
   const onChangeInInput = event => {
     const page = event.target.value ? Number(event.target.value) - 1 : 0
     gotoPage(page)
+  };
+
+  const handleEditTodo = (todo) => {
+    setIsEditing(true);
+    setEditedTodo(todo.title);
+    setTodoToEdit(todo);
+  };
+
+  const handleSaveEdit = () => {
+    const updatedTodo = { ...todoToEdit, title: editedTodo };
+    dispatch(editTodo(updatedTodo));
+
+    setIsEditing(false);
+    setEditedTodo('');
+    setTodoToEdit(null);
   };
 
   return (
