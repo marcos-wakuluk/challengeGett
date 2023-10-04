@@ -1,12 +1,13 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import { useTable, usePagination } from 'react-table';
 import { Row, Col, Button, Input } from 'reactstrap'
-import { editTodo } from '../redux/todoSlice';
 
 const TodoTable = ({
   columns,
   todoList,
 }) => {
+  const [currentPage, setCurrentPage] = useState(0);
+
   const {
     getTableProps,
     getTableBodyProps,
@@ -21,29 +22,34 @@ const TodoTable = ({
     nextPage,
     previousPage,
     setPageSize,
-    state: { pageIndex, pageSize }
+    state: { pageSize, pageIndex }
   } = useTable(
     {
       columns,
       data: todoList,
-      initialState: { pageIndex: 0, pageSize: 5 }
+      initialState: { pageIndex: currentPage, pageSize: 5 }
     },
     usePagination
   );
 
   const onChangeInInput = event => {
     const page = event.target.value ? Number(event.target.value) - 1 : 0
-    gotoPage(page)
+    setCurrentPage(page);
+    gotoPage(page);
   };
+
+  useEffect(() => {
+    setCurrentPage(pageIndex);
+  }, [pageIndex]);
 
   return (
     <>
-      <table {...getTableProps()} className="table table-bordered table-striped">
+      <table {...getTableProps()} className='table table-bordered table-striped'>
         <thead>
           {headerGroups.map((headerGroup) => (
             <tr {...headerGroup.getHeaderGroupProps()}>
               {headerGroup.headers.map((column) => (
-                <th {...column.getHeaderProps()}>{column.render('Header')}</th>
+                <th {...column.getHeaderProps()} className='text-center ps-0 pe-0' style={{ width: column.width }}>{column.render('Header')}</th>
               ))}
             </tr>
           ))}
@@ -54,7 +60,7 @@ const TodoTable = ({
             return (
               <tr {...row.getRowProps()}>
                 {row.cells.map((cell) => (
-                  <td {...cell.getCellProps()} className="align-middle">
+                  <td {...cell.getCellProps()} className='align-middle text-center ps-0 pe-0' style={{ width: cell.column.width }}>
                     {cell.render('Cell')}
                   </td>
                 ))}
@@ -69,6 +75,7 @@ const TodoTable = ({
             color='primary'
             onClick={() => gotoPage(0)}
             disabled={!canPreviousPage}
+            className='me-2'
           >
             {'<<'}
           </Button>
@@ -92,7 +99,7 @@ const TodoTable = ({
             min={1}
             style={{ width: 70 }}
             max={pageOptions.length}
-            defaultValue={pageIndex + 1}
+            value={pageIndex + 1}
             onChange={onChangeInInput}
           />
         </Col>
@@ -115,6 +122,7 @@ const TodoTable = ({
             color='primary'
             onClick={nextPage}
             disabled={!canNextPage}
+            className='me-2'
           >
             {'>'}
           </Button>

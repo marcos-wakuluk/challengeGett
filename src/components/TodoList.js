@@ -28,6 +28,8 @@ const TodoList = () => {
     {
       Header: '#',
       accessor: 'id',
+      headerClassName: 'text-center',
+      width: 40,
     },
     {
       Header: 'Task',
@@ -36,43 +38,46 @@ const TodoList = () => {
           <>
             {isEditing && todo === todoToEdit ? (
               <input
-                type="text"
+                type='text'
                 value={editedTodo}
                 onChange={(e) => setEditedTodo(e.target.value)}
-                className="form-control"
+                className='form-control'
               />
             ) : (
-              <Label>{todo.title}</Label>
+              <Label className={todo.completed ? 'text-decoration-line-through' : ''} >{todo.title}</Label>
             )}
           </>
         );
       },
+      width: 1000,
     },
     {
       Header: 'Completed',
       accessor: (todo) => {
         return (
-          <div className="d-flex justify-content-center">
+          <div className='d-flex justify-content-center text-center'>
             <Input
-              type="checkbox"
-              id="completed"
+              type='checkbox'
+              id='completed'
               checked={todo.completed}
               onChange={() => dispatch(changeCompleted(todo))}
+              className='text-center'
             />
           </div>
         );
       },
+      width: 100,
     },
     {
       Header: 'Edit',
       accessor: (todo) => {
         return (
-          <div className="d-flex justify-content-center">
+          <div className='d-flex justify-content-center'>
             {isEditing && todo === todoToEdit ? (
               <Button
-                type="button"
-                color="primary"
-                className="btn btn-primary"
+                type='button'
+                color='primary'
+                className='btn btn-primary'
                 onClick={handleSaveEdit}
               >
                 Save
@@ -80,19 +85,20 @@ const TodoList = () => {
             ) : (
               <BsFillPencilFill
                 onClick={() => handleEditTodo(todo)}
-                className="edit-icon"
-                style={{ cursor: 'pointer' }}
+                className='edit-icon'
+                style={{ color: 'blue', cursor: 'pointer' }}
               />
             )}
           </div>
         );
       },
+      width: 60,
     },
     {
       Header: 'Delete',
       accessor: (todo) => {
         return (
-          <div className="d-flex justify-content-center">
+          <div className='d-flex justify-content-center'>
             <BsFillTrash3Fill
               onClick={() => dispatch(deleteTodo(todo.id))}
               style={{ color: 'red', cursor: 'pointer' }}
@@ -100,6 +106,7 @@ const TodoList = () => {
           </div>
         );
       },
+      width: 60,
     },
   ];
 
@@ -119,10 +126,10 @@ const TodoList = () => {
   };
 
   return (
-    <>
+    <div style={{ width: '100vh' }}>
       {loading ? (
-        <div className="text-center">
-          <Spinner color="primary" />
+        <div className='text-center'>
+          <Spinner color='primary' />
         </div>
       ) : (
         <>
@@ -133,7 +140,7 @@ const TodoList = () => {
           />
         </>
       )}
-    </>
+    </div>
   );
 };
 

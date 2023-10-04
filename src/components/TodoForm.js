@@ -33,7 +33,7 @@ const TodoForm = () => {
       />
       <Button
         type='button'
-        color="primary"
+        color='primary'
         className='flex-lg-shrink-0'
         onClick={() => handleAddTodo()}
       >
