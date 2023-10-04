@@ -105,6 +105,7 @@ const TodoTable = ({
         </Col>
         <Col md={2}>
           <select
+            class="form-select"
             value={pageSize}
             onChange={(e) => {
               setPageSize(Number(e.target.value));
@@ -134,7 +135,7 @@ const TodoTable = ({
             {'>>'}
           </Button>
         </Col>
-      </Row>
+      </Row >
     </>
   );
 };

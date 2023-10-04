@@ -127,8 +127,9 @@ const TodoList = () => {
 
   return (
     <div style={{ width: '100vh' }}>
+      <h1 className='text-center mb-5 fw-bold'>Todo App</h1>
       {loading ? (
-        <div className='text-center'>
+        <div className='text-center' style={{ height: '400px' }}>
           <Spinner color='primary' />
         </div>
       ) : (
