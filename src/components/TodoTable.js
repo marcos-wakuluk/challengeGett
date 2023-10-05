@@ -1,6 +1,8 @@
 import React, { useState, useEffect } from 'react';
 import { useTable, usePagination } from 'react-table';
-import { Row, Col, Button, Input } from 'reactstrap'
+import { Row, Col, Button, Input } from 'reactstrap';
+
+const ELEMENT_TO_SHOW = [5, 10, 15, 20];
 
 const TodoTable = ({
   columns,
@@ -22,18 +24,18 @@ const TodoTable = ({
     nextPage,
     previousPage,
     setPageSize,
-    state: { pageSize, pageIndex }
+    state: { pageSize, pageIndex },
   } = useTable(
     {
       columns,
       data: todoList,
-      initialState: { pageIndex: currentPage, pageSize: 5 }
+      initialState: { pageIndex: currentPage, pageSize: 5 },
     },
     usePagination
   );
 
-  const onChangeInInput = event => {
-    const page = event.target.value ? Number(event.target.value) - 1 : 0
+  const onChangeInInput = (event) => {
+    const page = event.target.value ? Number(event.target.value) - 1 : 0;
     setCurrentPage(page);
     gotoPage(page);
   };
@@ -42,34 +44,60 @@ const TodoTable = ({
     setCurrentPage(pageIndex);
   }, [pageIndex]);
 
+  useEffect(() => {
+    if (page.length === 0 && currentPage > 0) {
+      const newPage = currentPage - 1;
+      setCurrentPage(newPage);
+      gotoPage(newPage);
+    }
+  }, [page, currentPage, gotoPage]);
+
   return (
     <>
-      <table {...getTableProps()} className='table table-bordered table-striped'>
-        <thead>
-          {headerGroups.map((headerGroup) => (
-            <tr {...headerGroup.getHeaderGroupProps()}>
-              {headerGroup.headers.map((column) => (
-                <th {...column.getHeaderProps()} className='text-center ps-0 pe-0' style={{ width: column.width }}>{column.render('Header')}</th>
-              ))}
-            </tr>
-          ))}
-        </thead>
-        <tbody {...getTableBodyProps()}>
-          {page.map((row) => {
-            prepareRow(row);
-            return (
-              <tr {...row.getRowProps()}>
-                {row.cells.map((cell) => (
-                  <td {...cell.getCellProps()} className='align-middle text-center ps-0 pe-0' style={{ width: cell.column.width }}>
-                    {cell.render('Cell')}
-                  </td>
+      <div style={{ maxHeight: '287px', minHeight: '287px', overflowY: 'auto', whiteSpace: 'nowrap', backgroundColor: 'white' }}>
+        <table {...getTableProps()} className='table table-bordered table-striped m-0'>
+          <thead>
+            {headerGroups.map((headerGroup) => (
+              <tr {...headerGroup.getHeaderGroupProps()}>
+                {headerGroup.headers.map((column) => (
+                  <th
+                    {...column.getHeaderProps()}
+                    className='text-center ps-0 pe-0'
+                    style={{
+                      width: column.width,
+                      position: 'sticky',
+                      top: -1,
+                      background: 'white',
+                      zIndex: 1,
+                    }}
+                  >
+                    {column.render('Header')}
+                  </th>
                 ))}
               </tr>
-            );
-          })}
-        </tbody>
-      </table>
-      <Row style={{ maxWidth: 1000, margin: '0 auto', textAlign: 'center' }}>
+            ))}
+          </thead>
+          <tbody {...getTableBodyProps()}>
+            {page.map((row) => {
+              prepareRow(row);
+              return (
+                <tr {...row.getRowProps()}>
+                  {row.cells.map((cell) => (
+                    <td
+                      {...cell.getCellProps()}
+                      className='align-middle text-center ps-0 pe-0'
+                      style={{ width: cell.column.width }}
+                    >
+                      {cell.render('Cell')}
+                    </td>
+                  ))}
+                </tr>
+              );
+            })}
+          </tbody>
+        </table>
+      </div>
+      <Row className='mt-2' style={{ margin: '0 auto', textAlign: 'center' }}>
         <Col md={3}>
           <Button
             color='primary'
@@ -105,13 +133,13 @@ const TodoTable = ({
         </Col>
         <Col md={2}>
           <select
-            class="form-select"
+            className="form-select"
             value={pageSize}
             onChange={(e) => {
               setPageSize(Number(e.target.value));
             }}
           >
-            {[5, 10, 15, 20].map((pageSize) => (
+            {ELEMENT_TO_SHOW.map((pageSize) => (
               <option key={pageSize} value={pageSize}>
                 Show {pageSize}
               </option>
@@ -135,7 +163,7 @@ const TodoTable = ({
             {'>>'}
           </Button>
         </Col>
-      </Row >
+      </Row>
     </>
   );
 };

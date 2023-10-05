@@ -5,6 +5,7 @@ import { addTodo, changeCompleted, editTodo, deleteTodo } from '../redux/todoSli
 import TodoTable from './TodoTable';
 import TodoForm from './TodoForm';
 import { BsFillPencilFill, BsFillTrash3Fill } from 'react-icons/bs';
+import NavBar from './NavBar';
 
 const TodoList = () => {
   const [loading, setLoading] = useState(true);
@@ -53,6 +54,7 @@ const TodoList = () => {
     },
     {
       Header: 'Completed',
+      id: 'completed',
       accessor: (todo) => {
         return (
           <div className='d-flex justify-content-center text-center'>
@@ -125,23 +127,37 @@ const TodoList = () => {
     setTodoToEdit(null);
   };
 
+  const handleSort = (list) => {
+    return [...list].sort((a, b) => {
+      if (a.completed === b.completed) {
+        return 0;
+      } else if (a.completed) {
+        return 1;
+      } else {
+        return -1;
+      }
+    });
+  }
+
   return (
-    <div style={{ width: '100vh' }}>
-      <h1 className='text-center mb-5 fw-bold'>Todo App</h1>
-      {loading ? (
-        <div className='text-center' style={{ height: '400px' }}>
-          <Spinner color='primary' />
-        </div>
-      ) : (
-        <>
-          <TodoForm />
-          <TodoTable
-            columns={columns}
-            todoList={todoList}
-          />
-        </>
-      )}
-    </div>
+    <>
+      <NavBar />
+      <div style={{ width: '100vh' }}>
+        {loading ? (
+          <div className='text-center' style={{ height: '400px' }}>
+            <Spinner color='primary' />
+          </div>
+        ) : (
+          <>
+            <TodoForm />
+            <TodoTable
+              columns={columns}
+              todoList={handleSort(todoList)}
+            />
+          </>
+        )}
+      </div>
+    </>
   );
 };
 

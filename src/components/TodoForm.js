@@ -35,7 +35,7 @@ const TodoForm = () => {
         type='button'
         color='primary'
         className='flex-lg-shrink-0'
-        onClick={() => handleAddTodo()}
+        onClick={handleAddTodo}
       >
         Add task
       </Button>
